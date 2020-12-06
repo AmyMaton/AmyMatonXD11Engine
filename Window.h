@@ -2,6 +2,7 @@
 #include "FakeWindows.h"
 #include "Exception.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 class Window
 {
@@ -30,6 +31,9 @@ public:
 		static constexpr const char* WindowsClassName = "DirectX11 Engine";
 		static WindowClass wndClass;
 		HINSTANCE hInst;
+
+		
+
 	public:
 		static const char* GetName()noexcept;
 		static HINSTANCE GetInstance() noexcept;
@@ -39,12 +43,15 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+
+	void SetTitle(const std::string& title);
 private: 
 	int width;
 	int height;
 	HWND hWnd;
 public:
 	Keyboard keyboard;
+	Mouse mouse;
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;

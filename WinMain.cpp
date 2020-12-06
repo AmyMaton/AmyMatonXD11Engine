@@ -1,4 +1,5 @@
 #include "Window.h"
+#include <sstream>
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -18,6 +19,19 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			//Mouse Test
+			while (!wnd.mouse.IsEmpty())
+			{
+				const auto e = wnd.mouse.Read();
+				if (e.GetType() == Mouse::Event::Type::Movement)
+				{
+					std::ostringstream oss;
+					oss << "Position Of Mouse: " << e.GetPosX() << "," << e.GetPosY();
+					wnd.SetTitle(oss.str());
+				}
+			}
+
 			//Keyboard Test
 			if (wnd.keyboard.IsKeyPressed(VK_MENU))
 			{
