@@ -104,6 +104,8 @@ private:
 	void OnMouseLeaveWindow() noexcept;
 	void OnMouseEnterWindow() noexcept;
 
+	void OnWheelDelta(int x, int y, int delta) noexcept;
+
 private:
 	static constexpr unsigned int bufferSize = 16u;
 	int x;
@@ -113,4 +115,5 @@ private:
 	std::queue<Event> buffer;
 
 	bool isInWindow = false;
+	int wheelDeltaCarry = 0;
 };

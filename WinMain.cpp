@@ -35,6 +35,7 @@ int CALLBACK WinMain(
 					oss << "Position Of Mouse: " << e.GetPosX() << "," << e.GetPosY();
 					wnd.SetTitle(oss.str());
 				}
+
 				break;
 				}
 			}
