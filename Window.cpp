@@ -100,6 +100,9 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 //The Window Constructor
 
 Window::Window(int width, int height, const char* name)
+	:
+	width (width),
+	height (height)
 {
 	//Work out window size based on set client size
 	RECT wr;
@@ -200,8 +203,30 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		// Mouse cases
 	case WM_MOUSEMOVE:
 	{
-		POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnMouseMove(pt.x, pt.y);
+		const POINTS pt = MAKEPOINTS(lParam);
+		//inside the window code
+		if (pt.x >= 0 && pt.x < width && pt.y>=0 && pt.y < height)
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsMouseInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnterWindow();
+			}
+		}
+		//outside the window code
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeaveWindow();
+			}
+		}
 		break;
 	}
 	case WM_RBUTTONDOWN:

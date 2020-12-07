@@ -105,3 +105,20 @@ void Mouse::TrimBuffer() noexcept
 		buffer.pop();
 	}
 }
+
+bool Mouse::IsMouseInWindow() const noexcept
+{
+	return isInWindow;
+}
+
+void Mouse::OnMouseEnterWindow() noexcept
+{
+	isInWindow = true;
+	buffer.push(Mouse::Event(Mouse::Event::Type::EnterWindow, *this));
+}
+
+void Mouse::OnMouseLeaveWindow() noexcept
+{
+	isInWindow = false;
+	buffer.push(Mouse::Event(Mouse::Event::Type::LeaveWindow, *this));
+}

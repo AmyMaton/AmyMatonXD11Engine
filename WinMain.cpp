@@ -24,11 +24,18 @@ int CALLBACK WinMain(
 			while (!wnd.mouse.IsEmpty())
 			{
 				const auto e = wnd.mouse.Read();
-				if (e.GetType() == Mouse::Event::Type::Movement)
+				switch (e.GetType())
+				{
+				case Mouse::Event::Type::LeaveWindow:
+					wnd.SetTitle("MouseLeftWindow");
+					break;
+				case Mouse::Event::Type::Movement:
 				{
 					std::ostringstream oss;
 					oss << "Position Of Mouse: " << e.GetPosX() << "," << e.GetPosY();
 					wnd.SetTitle(oss.str());
+				}
+				break;
 				}
 			}
 
