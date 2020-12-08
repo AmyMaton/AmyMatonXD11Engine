@@ -3,6 +3,9 @@
 #include "Exception.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include <optional>
+#include "Graphics.h"
+#include <memory>
 
 class Window
 {
@@ -45,10 +48,18 @@ public:
 	Window& operator=(const Window&) = delete;
 
 	void SetTitle(const std::string& title);
+
+	static std::optional<int> ProcessMessages();
+
+	Graphics& GFX();
+
 private: 
 	int width;
 	int height;
 	HWND hWnd;
+
+	std::unique_ptr<Graphics> PointerGFX;
+
 public:
 	Keyboard keyboard;
 	Mouse mouse;

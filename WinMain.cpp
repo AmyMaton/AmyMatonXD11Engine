@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <sstream>
+#include "Application.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -9,50 +10,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		//create multiple windows
-		Window wnd(1280, 720, "Uni3D");
-		//Window wnd2(200, 650, "Uni3Dmk2");
-
-		MSG msg;
-		BOOL Result;
-		while ((Result = GetMessage(&msg, nullptr, 0, 0)) > 0)
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-
-			//Mouse Test
-			while (!wnd.mouse.IsEmpty())
-			{
-				const auto e = wnd.mouse.Read();
-				switch (e.GetType())
-				{
-				case Mouse::Event::Type::LeaveWindow:
-					wnd.SetTitle("MouseLeftWindow");
-					break;
-				case Mouse::Event::Type::Movement:
-				{
-					std::ostringstream oss;
-					oss << "Position Of Mouse: " << e.GetPosX() << "," << e.GetPosY();
-					wnd.SetTitle(oss.str());
-				}
-
-				break;
-				}
-			}
-
-			//Keyboard Test
-			if (wnd.keyboard.IsKeyPressed(VK_MENU))
-			{
-				MessageBox(nullptr, "alt Key was pressed", "alt key was pressed", MB_OK | MB_ICONEXCLAMATION);
-			}
-		}
-
-		if (Result == -1)
-		{
-			return -1;
-		}
-
-		return msg.wParam;
+	return Application{}.Go();
 	}
 	catch (const MyException & e)
 	{

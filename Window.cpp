@@ -135,7 +135,8 @@ Window::Window(int width, int height, const char* name)
 	//Actually show is the window
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 
-
+	//Graphics Object Creation
+	PointerGFX = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -263,4 +264,27 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 	
+}
+
+std::optional<int> Window::ProcessMessages()
+{
+	MSG msg;
+
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		if (msg.message == WM_QUIT)
+		{
+			return msg.wParam;
+		}
+
+		TranslateMessage(&msg);
+		DispatchMessageA(&msg);
+	}
+
+	return {};
+}
+
+Graphics& Window::GFX()
+{
+	return *PointerGFX;
 }
